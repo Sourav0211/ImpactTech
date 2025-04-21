@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import colors from "colors";
 import authRoutes from "./routes/authRoutes.js";
+import dietRoutes from "./routes/dietRoutes.js";
 
 //configure env
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 
 //routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/diet", dietRoutes);
 
 const PORT = process.env.PORT || 3000;
 

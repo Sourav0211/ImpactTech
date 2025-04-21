@@ -4,6 +4,7 @@ import {
   signinController,
   createProfileController,
   updateProfileController,
+  getProfileController,
 } from "../controllers/authController.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -18,8 +19,10 @@ router.post("/signup", signupController);
 //Signin || METHOD POST
 router.post("/signin", signinController);
 
-router.post("/profile", requireSignIn, createProfileController)
+router.post("/create-profile", requireSignIn, createProfileController)
 
 router.put("/update-profile", requireSignIn, updateProfileController)
+
+router.get("/get-profile", requireSignIn, getProfileController)
 
 export default router;

@@ -208,4 +208,33 @@ export const updateProfileController = async (req, res) => {
       });
     }
   };
+
+export const getProfileController = async (req,res) => {
+
+  const userId = req.user.id;
+
+  try {
+    const existingProfile = await prisma.fitnessProfile.findUnique({
+      where: { userId },
+    });
+
+    if (!existingProfile) {
+      return res.status(400).json({
+        message: "Profile not found.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Profile fetched successfully",
+      profile: existingProfile,
+    });
+
+
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    return res.status(500).json({
+      message: "Internal server error while fetching profile.",
+    });
+  }
+}
   
