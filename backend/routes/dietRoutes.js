@@ -1,6 +1,6 @@
 import express from "express";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
-import { createCustomDietPlanController, createCustomRecipeController, deleteDietPlanController, deleteRecipeController, getAllDietPlansController, getAllRecipesController, saveGeneratedRecipeController, setDietPlanController } from "../controllers/dietController.js";
+import { createCustomDietPlanController, createCustomRecipeController, deleteDietPlanController, deleteRecipeController, getAllDietPlansController, getAllRecipesController, getCurrentDietPlanController, saveGeneratedRecipeController, setDietPlanController } from "../controllers/dietController.js";
 
 const router = express.Router();
 
@@ -19,5 +19,7 @@ router.delete("/delete-diet/:id",requireSignIn,deleteDietPlanController);
 router.delete("/delete-recipe/:id",requireSignIn,deleteRecipeController);
 
 router.post("/set-diet/:dietPlanId",requireSignIn,setDietPlanController);
+
+router.get("/get-current-diet",requireSignIn,getCurrentDietPlanController);
 
 export default router;

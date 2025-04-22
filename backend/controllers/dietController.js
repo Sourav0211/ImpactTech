@@ -378,3 +378,27 @@ export const setDietPlanController = async (req, res) => {
   }
 };
 
+export const getCurrentDietPlanController = async (req, res) => {
+  const userId = req.user.id; // Assuming you're passing the logged-in user's ID in `req.user`
+
+  try {
+    // Fetch the UserCurrentPlan for the user
+    const currentPlan = await prisma.userCurrentPlan.findUnique({
+      where: { userId },
+
+    });
+
+    // If no current plan exists for the user, return a message
+    if (!currentPlan || !currentPlan.currentDietPlanId) {
+      return res.status(404).json({ message: 'No current diet plan found' });
+    }
+    const currentDietPlan = await prisma.dietPlan.findUnique({
+      where : {id: currentPlan.currentDietPlanId}
+    })
+
+    return res.status(200).json({ message: 'Current diet plan fetched successfully!', currentDietPlanId: currentPlan.currentDietPlanId, currentDietPlan: currentDietPlan});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error fetching current diet plan' });
+  }
+};

@@ -4,6 +4,7 @@ import {
   createWorkoutProgressController,
   deleteWorkoutPlanController,
   getAllWorkoutPlansController,
+  getCurrentWorkoutPlanController,
   getVisualProgressController,
   setWorkoutPlanController,
 } from "../controllers/workoutController.js";
@@ -21,13 +22,19 @@ router.post("/progress", requireSignIn, createWorkoutProgressController);
 
 router.get("/get-all-workouts", requireSignIn, getAllWorkoutPlansController);
 
-router.get("/visual-progress",requireSignIn,getVisualProgressController );
-
-
+router.get("/visual-progress", requireSignIn, getVisualProgressController);
 
 router.delete("/delete/:id", requireSignIn, deleteWorkoutPlanController);
 
+router.post(
+  "/set-workout/:workoutPlanId",
+  requireSignIn,
+  setWorkoutPlanController
+);
 
-
-router.post("/set-workout/:workoutPlanId",requireSignIn, setWorkoutPlanController);
+router.get(
+  "/get-current-workout",
+  requireSignIn,
+  getCurrentWorkoutPlanController
+);
 export default router;
