@@ -30,6 +30,8 @@ model User {
   recipe Recipe[]
   workoutPlan WorkoutPlan[]
   workoutProgress WorkoutProgress[]
+  userCurrentPlan UserCurrentPlan?
+  dailyLogs       DailyLog[]
 }
 
 model FitnessProfile {
@@ -71,6 +73,8 @@ model DietPlan {
   updatedAt   DateTime @updatedAt
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Define the opposite relation to DailyLog
+  dailyLogs   DailyLog[] @relation("DietPlanDailyLogs") // New relation
 }
 
 model Recipe {
@@ -104,6 +108,8 @@ model WorkoutPlan {
   updatedAt             DateTime @updatedAt
 
   user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Define the opposite relation to DailyLog
+  dailyLogs   DailyLog[] @relation("WorkoutPlanDailyLogs") // New relation
 }
 
 
@@ -121,3 +127,31 @@ model WorkoutProgress {
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)  // User relation
 }
+
+
+model UserCurrentPlan {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  currentWorkoutPlanId String?
+  currentDietPlanId    String?
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+model DailyLog {
+  id            String   @id @default(cuid())
+  userId        String
+  date          DateTime @unique
+  workoutPlanId String?  // auto-linked from UserCurrentPlan
+  dietPlanId    String?
+  workoutDone   Boolean
+  dietFollowed  Boolean
+  notes         String?
+
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workoutPlan   WorkoutPlan? @relation("WorkoutPlanDailyLogs",fields: [workoutPlanId], references: [id], onDelete: SetNull)  // Relation to WorkoutPlan
+  dietPlan      DietPlan?    @relation("DietPlanDailyLogs",fields: [dietPlanId], references: [id], onDelete: SetNull)     // Relation to DietPlan
+}
+

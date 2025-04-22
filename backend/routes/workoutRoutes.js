@@ -5,6 +5,7 @@ import {
   deleteWorkoutPlanController,
   getAllWorkoutPlansController,
   getVisualProgressController,
+  setWorkoutPlanController,
 } from "../controllers/workoutController.js";
 import { requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -27,4 +28,6 @@ router.get("/visual-progress",requireSignIn,getVisualProgressController );
 router.delete("/delete/:id", requireSignIn, deleteWorkoutPlanController);
 
 
+
+router.post("/set-workout/:workoutPlanId",requireSignIn, setWorkoutPlanController);
 export default router;

@@ -6,6 +6,7 @@ import colors from "colors";
 import authRoutes from "./routes/authRoutes.js";
 import dietRoutes from "./routes/dietRoutes.js";
 import workoutRoutes from "./routes/workoutRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js"
 
 //configure env
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/diet", dietRoutes);
 app.use("/api/v1/workout", workoutRoutes);
+app.use("/api/v1/chat",chatRoutes);
 
 const PORT = process.env.PORT || 3000;
 

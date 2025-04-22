@@ -255,3 +255,35 @@ export const getVisualProgressController = async (req, res) => {
     }
   };
   
+export const setWorkoutPlanController = async (req, res) => {
+    const { workoutPlanId } = req.params;
+    const userId = req.user.id; // Assuming you're passing the logged-in user's ID in `req.userId`
+  
+    try {
+      // Check if a UserCurrentPlan exists for the user
+      let currentPlan = await prisma.userCurrentPlan.findUnique({
+        where: { userId }
+      });
+  
+      // If UserCurrentPlan doesn't exist, create a new one
+      if (!currentPlan) {
+        currentPlan = await prisma.userCurrentPlan.create({
+          data: {
+            userId,
+            currentWorkoutPlanId: workoutPlanId
+          }
+        });
+      } else {
+        // If UserCurrentPlan exists, update the current workout plan
+        currentPlan = await prisma.userCurrentPlan.update({
+          where: { userId },
+          data: { currentWorkoutPlanId: workoutPlanId }
+        });
+      }
+  
+      return res.status(200).json({ message: 'Workout plan set successfully!', currentPlan });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Error setting workout plan' });
+    }
+  };
