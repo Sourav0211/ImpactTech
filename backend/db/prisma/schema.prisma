@@ -27,6 +27,9 @@ model User {
   // Relation
   fitnessProfile FitnessProfile?
   dietPlan DietPlan[]
+  recipe Recipe[]
+  workoutPlan WorkoutPlan[]
+  workoutProgress WorkoutProgress[]
 }
 
 model FitnessProfile {
@@ -68,4 +71,53 @@ model DietPlan {
   updatedAt   DateTime @updatedAt
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Recipe {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  ingredients Json
+  instructions String
+  calories Int
+  protein Int
+  fat Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WorkoutPlan {
+  id                    String   @id @default(cuid())
+  userId                String
+  goal                  String
+  experienceLevel       String
+  availableEquipment    String[] // List of equipment user has
+  workoutDaysPerWeek    Int
+  preferredWorkoutTime  String
+  injuries              String[] // List of injuries
+  sessionDurationMinutes Int
+  workoutType           String   // e.g., weight training, calisthenics, HIIT, yoga
+  planJson              Json     // AI-generated workout plan
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+model WorkoutProgress {
+  id          String   @id @default(cuid())  // Unique identifier for progress entry
+  userId      String   // Foreign key linking to the User model
+  date        DateTime @default(now())  // The date when the progress was recorded
+  bodyWeight  Float    // The user's body weight at the time of the workout (in kg)
+  exercises   Json     // JSON field to store exercise data (weight, reps, sets, etc.)
+  month       Int      // Month of the recorded progress (1-12)
+  year        Int     // Year of the recorded progress (e.g., 2025)
+  totalVolume Int     
+  createdAt   DateTime @default(now())  // Timestamp when the record was created
+  updatedAt   DateTime @updatedAt  // Timestamp when the record was last updated
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)  // User relation
 }
