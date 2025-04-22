@@ -26,7 +26,7 @@ router.get("/visual-progress", requireSignIn, getVisualProgressController);
 
 router.delete("/delete/:id", requireSignIn, deleteWorkoutPlanController);
 
-router.post(
+router.put(
   "/set-workout/:workoutPlanId",
   requireSignIn,
   setWorkoutPlanController
